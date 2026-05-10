@@ -1,61 +1,58 @@
 # FastAPI Task API
 ## Tests
-Install dependencies:
+Установка dependencies:
 ```bash
 ./venv/bin/pip install -r requirements.txt
 ```
 
-Run all tests:
-
+Запись всех тестов:
 ```bash
 ./venv/bin/python -m pytest tests
 ```
 
-Run tests with coverage:
-
+Запух всех тестов:
 ```bash
 ./venv/bin/python -m coverage run -m pytest tests
 ./venv/bin/python -m coverage report -m app/*.py app/routers/*.py
 ./venv/bin/python -m coverage html
 ```
 
-Current application coverage: 82%.
+Тестовое покрытие: 82%.
 
-The generated HTML coverage report is available at:
+ HTML:
 
 ```txt
 htmlcov/index.html
 ```
 
-This file can be opened in a browser to view coverage details without running the code.
+Можно посмотреть.
 
 ## Load Testing
 
-Start the API:
+Запуск API:
 
 ```bash
 ./venv/bin/uvicorn app.main:app --reload
 ```
 
-Run Locust with the web UI:
+Запуск Locust:
 
 ```bash
 ./venv/bin/locust -f locustfile.py -H http://127.0.0.1:8000
 ```
 
-Then open:
+Посмотреть:
 
 ```txt
 http://localhost:8089
 ```
-
-Run a short headless load test and generate an HTML report:
+ Запустить HTML репопт:
 
 ```bash
 ./venv/bin/locust -f locustfile.py -H http://127.0.0.1:8000 --headless -u 5 -r 2 -t 10s --html locust-report.html
 ```
 
-The latest load-test HTML report is available at:
+Последний HTML репорт:
 
 ```txt
 locust-report.html
