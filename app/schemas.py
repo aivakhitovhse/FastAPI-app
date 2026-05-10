@@ -18,7 +18,7 @@ class TaskUpdate(BaseModel):
     status: Optional[TaskStatus] = None
     priority: Optional[int] =None
 
-class Task(BaseModel):
+class Task(TaskBase):
     id: int
     created_at: datetime
     owner_id: int
@@ -31,7 +31,6 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    tasks: list[Task] = []
     model_config = ConfigDict(from_attributes=True)
 
 class Token(BaseModel):
@@ -40,5 +39,4 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
-
 
