@@ -18,9 +18,7 @@ def test_verify_password_rejects_wrong_password():
 
 def test_create_access_token_contains_subject():
     token = dependencies.create_access_token(data={"sub": "test-user"},
-        expires_delta=timedelta(minutes=5),
-    )
-    payload = jwt.decode(token, dependencies.SECRET_KEY, algorithms=[dependencies.ALGORITHM],
-    )
+        expires_delta=timedelta(minutes=5),)
+    payload = jwt.decode(token, dependencies.SECRET_KEY, algorithms=[dependencies.ALGORITHM],)
     assert payload["sub"] == "test-user"
     assert "exp" in payload

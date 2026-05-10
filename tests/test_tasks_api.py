@@ -113,7 +113,7 @@ async def test_search_tasks(tasks_client):
     client, _ = tasks_client
     await client.post( "/tasks/",
         json={"title": "Read FastAPI docs", "description": "Study routing"},
-    )
+                       )
     await client.post( "/tasks/",
         json={"title": "Write tests", "description": "Cover FastAPI app"},
     )
