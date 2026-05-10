@@ -57,6 +57,18 @@ async def test_read_task_returns_404_for_missing_task(tasks_client):
     assert response.status_code == 404
     assert response.json()["detail"] == "Task not found"
 
+@pytest.mark.asyncio
+async def test_read_task_returns_created_task(tasks_client):
+    client, _ = tasks_client
+    create_response = await client.post("/tasks/",json={"title": "Read one task", "description": "details", "priority": 3},)
+    task_id = create_response.json()["id"]
+
+    response = await client.get(f"/tasks/{task_id}")
+
+    assert response.status_code == 200
+    assert response.json()["id"] == task_id
+    assert response.json()["title"] == "Read one task"
+
 
 @pytest.mark.asyncio
 async def test_update_task(tasks_client):

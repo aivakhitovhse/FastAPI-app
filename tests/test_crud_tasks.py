@@ -64,6 +64,31 @@ async def test_get_tasks_sorts_by_priority_desc(db_session):
     assert [task.title for task in tasks] == ["High", "Medium", "Low"]
 
 @pytest.mark.asyncio
+async def test_get_tasks_sorts_by_title_asc(db_session):
+    user = await crud.create_user(db_session, schemas.UserCreate(username="alice", password="password"),
+                                  hashed_password="hashed-password",)
+    await crud.create_task(db_session, schemas.TaskCreate(title="Beta", description="second"), user_id=user.id,)
+    await crud.create_task(db_session, schemas.TaskCreate(title="Alpha", description="first"), user_id=user.id,)
+
+    tasks = await crud.get_tasks(db_session, user_id=user.id, sort_by="title", sort_desc=False)
+
+    assert [task.title for task in tasks] == ["Alpha", "Beta"]
+
+@pytest.mark.asyncio
+async def test_get_tasks_sorts_by_status_asc(db_session):
+    user = await crud.create_user(db_session, schemas.UserCreate(username="alice", password="password"),
+                                  hashed_password="hashed-password",)
+    await crud.create_task(db_session, schemas.TaskCreate(title="Pending", description="pending", status=models.TaskStatus.pending,
+    ), user_id=user.id,)
+    await crud.create_task(db_session, schemas.TaskCreate(
+        title="Completed", description="completed", status=models.TaskStatus.completed,
+    ), user_id=user.id,)
+
+    tasks = await crud.get_tasks(db_session, user_id=user.id, sort_by="status", sort_desc=False)
+
+    assert [task.status for task in tasks] == [models.TaskStatus.completed, models.TaskStatus.pending]
+
+@pytest.mark.asyncio
 async def test_update_task_changes_only_passed_fields(db_session):
     user = await crud.create_user(db_session,schemas.UserCreate(username="alice", password="password"),hashed_password="hashed-password",)
     task = await crud.create_task(db_session,schemas.TaskCreate(title="Old title",description="Old description",priority=1,), user_id=user.id,)
